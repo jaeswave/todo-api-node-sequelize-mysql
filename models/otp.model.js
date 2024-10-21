@@ -1,41 +1,42 @@
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require("../config/sequelize");
 
-const {Sequelize, DataTypes} = require("sequelize")
-const sequelize = require('../config/sequelize')
-
-
-const Otp = sequelize.define("Otp", 
-    {
+const Otp = sequelize.define(
+  "Otp",
+  {
     sn: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      references:{
-        model: 'Customers',
-        key: 'email'
-      }
+      references: {
+        model: "Customers",
+        key: "email",
+      },
     },
     otp: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     created_at: {
-      type: DataTypes.STRING,
-      
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     modified_at: {
-      type: DataTypes.STRING
-    }
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    sequelize,
+    modelName: "Otp",
+    tableName: "otp_tbl",
+    timestamps: false,
+  }
+);
 
-},{
-  timestamps: false,
-  createdAt: false,
-  updatedAt: false  
-})
-
-
-module.exports = { Otp }
+module.exports = { Otp };

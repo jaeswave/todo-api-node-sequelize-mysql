@@ -1,64 +1,65 @@
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require("../config/sequelize");
 
-const {Sequelize, DataTypes} = require("sequelize")
-const sequelize = require('../config/sequelize')
-
-
-const Todo = sequelize.define("Todo", 
-    {
+const Todo = sequelize.define(
+  "Todo",
+  {
     sn: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      unique: true,
     },
-    todo_id:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        uniqueKey: true
+    todo_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false,
     },
-    
+    todo_name: {
+      type: DataTypes.STRING,
+      defaultValue: false,
+      allowNull: false,
+    },
+    todo_description: {
+      type: DataTypes.TEXT,
+      defaultValue: false,
+      allowNull: false,
+    },
     customer_id: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        uniqueKey: true,
-        references: {
-            model: 'Customers',
-            key: 'customer_id'
-        }
-
-    },
-    todo_name:{
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    todo_description:{
-        type: DataTypes.TEXT,
-        allowNull: true
-
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "customers",
+        key: "customer_id",
+      },
     },
     status: {
-        type: DataTypes.ENUM('pending', 'completed'),
-        allowNull: false,
-        defaultValue: 'pending'
+      type: DataTypes.ENUM("pending", "completed"),
+      defaultValue: "pending",
     },
-    is_deleted : {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+    is_deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    customer_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     created_at: {
-      type: DataTypes.STRING,
-      
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     modified_at: {
-      type: DataTypes.STRING
-    }
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    sequelize,
+    modelName: "Todo",
+    tableName: "todos",
+    timestamps: false,
+  }
+);
 
-},{
-  timestamps: false,
-  createdAt: false,
-  updatedAt: false  
-})
-
-
-module.exports = { Todo }
+module.exports = { Todo };
